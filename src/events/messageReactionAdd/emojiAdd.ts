@@ -28,14 +28,20 @@ export default async (reaction: MessageReaction, user: User) => {
     if (emoji.name !== "🤝") return;
 
     const ticket = await createTicketChannel(guild, user, author);
+    const originalMessage = await channel
+      .fetchStarterMessage()
+      .catch(console.log);
+
     const embed = createTicketEmbed(channel);
-    const content = `Hey ${user} (buyer) and ${author} (seller)`;
+    const content = `Hey ${user} (buyer) and ${author} (seller).\n**Original Message**:\n${
+      originalMessage?.content || "Not found"
+    }`;
 
     await ticket.send({ content, embeds: [embed] });
 
     await channel.setName(`${channel.name} [INACTIVE]`);
     await channel.setLocked(true);
-    const originalMessage = await channel.fetchStarterMessage();
+
     await originalMessage?.react("🔒");
   } catch (error) {
     console.log(error);
