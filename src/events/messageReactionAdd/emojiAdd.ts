@@ -32,6 +32,10 @@ export default async (reaction: MessageReaction, user: User) => {
       .fetchStarterMessage()
       .catch(console.log);
 
+    console.log(reaction.message);
+    console.log(channel);
+    console.log(originalMessage);
+
     const embed = createTicketEmbed(channel);
     const content = `Hey ${user} (buyer) and ${author} (seller).\n**Original Message**:\n${
       originalMessage?.content || "Not found"
